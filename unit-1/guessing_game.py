@@ -3,11 +3,12 @@ user_name = input("What is your name? ")
 
 def start_game():
     print("Welcome to game {}".format(user_name))
-    #print(ran_num)
+    ran_num = random.randint(1, 10)
+    print(ran_num)
 
     game_play = True
     while game_play:
-        ran_num = random.randint(1, 10)
+        
 
         answer = input("Pick a number between 1 - 10: ")
 
@@ -26,7 +27,7 @@ def start_game():
         elif answer == ran_num:
             attempt += 1
             print("Got it. It took you {} attempts.".format(attempt))
-            play_again = input("What to restart? Y/N")
+            play_again = input("What to restart? Y/N ")
             if play_again == "Y":
                 start_game()
             else:
