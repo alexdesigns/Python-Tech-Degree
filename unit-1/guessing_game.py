@@ -4,7 +4,7 @@ user_name = input("What is your name? ")
 def start_game():
     print("Welcome to game {}".format(user_name))
     ran_num = random.randint(1, 10)
-    print(ran_num)
+    #print(ran_num)
 
     game_play = True
     while game_play:
