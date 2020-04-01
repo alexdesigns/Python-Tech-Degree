@@ -8,10 +8,8 @@ def start_game():
 
     game_play = True
     while game_play:
-        
 
         answer = input("Pick a number between 1 - 10: ")
-
         answer = int(answer)
         attempt = 1
 
