@@ -36,6 +36,7 @@ def create_teams(roster_exp, roster_inexp):
     team_num = 0
     while available_players:
         team_num =+ 1
+        #test team_a. determine if one loop can be used
         while team_num <=3:
             exp_index = random.randint(0, len(roster_exp) - 1)
             inexp_index = random.randint(0, len(roster_inexp) - 1)
