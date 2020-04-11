@@ -53,6 +53,7 @@ def start_game():
                 attempt += 1
                 continue
             elif answer == ran_num:
+                #Step: 3 - User gets answer correct
                 all_scores.append(attempt)
                 print("\n","-" * 40)
                 print(" CORRECT. It took you {} attempts.".format(attempt))
@@ -62,18 +63,18 @@ def start_game():
                     if stage != 1:
                         print("\n---- Congratulations New Highscore: {} Attempts ----\n".format(high_score))
                 
-                time.sleep(.5)   
-                stage += 1
-
+                #Step: 4 - Play Again?
                 play_again = ""                       
                 while play_again != "N":
-                    play_again = input("\nWhat to try again? Y/N: ")
+                    time.sleep(.5) 
+                    play_again = input("\nWant to try again? Y/N: ")
 
                     if play_again.upper() == "Y":
                         print("-" * 40)
                         print("Begin Round: {} | Current Highscore: {}".format(stage, high_score))
                         print("-" * 40, "\n")
                         #print("Attempt: {} High Score: {} Stage: {} Scores: {}" .format(attempt,high_score, stage,all_scores))
+                        stage += 1
                         attempt = 1
                         ran_num = random.randint(1, 10)                    
                         break
