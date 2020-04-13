@@ -2,7 +2,7 @@ import random
 import time
 
 print("-" * 20)
-print(" Welcome to the Number Guessing Game!")
+print("Welcome to the Number Guessing Game!")
 print("-" * 20)
 
 all_scores = [99]
@@ -64,9 +64,9 @@ def start_game():
                         print("\n---- Congratulations New Highscore: {} Attempts ----\n".format(high_score))
                 
                 #Step: 4 - Play Again?
+                time.sleep(.5) 
                 play_again = ""                       
                 while play_again != "N":
-                    time.sleep(.5) 
                     play_again = input("\nWant to try again? Y/N: ")
 
                     if play_again.upper() == "Y":
