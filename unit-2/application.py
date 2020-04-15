@@ -29,52 +29,55 @@ def data_tool():
                 show_data(select_team)
                 # -------------------------------------
                 restart_tool()
+                break
             else:
                 print ("ERROR: ENTER 1-3\n")
         
                 
 def final_teams():
-    roster_exp, roster_inexp = players_tool()
+    get_roster = players_tool()
+    all_roster = dict(j for i in get_roster for j in i.items())
+    
+    roster_players = len(all_roster)
+    players_amount = roster_players // 3
 
-    roster_exp = int(len(roster_exp))
-    roster_inexp = int(len(roster_inexp))
     team_1 = []
     team_2 = []
     team_3 = []
-    available_players = True    
-    while available_players:
-        i_exp = random.randint(0, len(roster_exp) - 1)
-        i_inexp = random.randint(0, len(roster_inexp) - 1)
-        team_1.append(roster_exp[i_exp])
-        del roster_exp[i_exp]
-        team_1.append(roster_inexp[i_inexp])
-        del roster_inexp[i_inexp]
-        # --------------------------------
-        i_exp = random.randint(0, len(roster_exp) - 1)
-        i_inexp = random.randint(0, len(roster_inexp) - 1)
-        team_2.append(roster_exp[i_exp])
-        del roster_exp[i_exp]
-        team_2.append(roster_inexp[i_inexp])
-        del roster_inexp[i_inexp]
-        # --------------------------------
-        i_exp = random.randint(0, len(roster_exp) - 1)
-        i_inexp = random.randint(0, len(roster_inexp) - 1)
-        team_3.append(roster_exp[i_exp])
-        del roster_exp[i_exp]
-        team_3.append(roster_inexp[i_inexp])
-        del roster_inexp[i_inexp]
-        # --------------------------------
-        if len(roster_exp) > 0:
-            continue
-        else:
-            available_players = False
-            break
+
+    exp_count = 0
+    inexp_count = 0
+
+    print(all_roster, "----------------")
         
+
+    for k, v in all_roster.items():  
+        print(f'  {k}) {v}')
+        random_player = random.choice(list(all_roster.keys()))
+        #random_player_exp = random_player['experience']
+        #print(random_player_exp)
+        quit()
+        for player in all_roster:
+            if random_player['experience'] == True and exp_count < 3 and 3 < 6:
+                exp_count += 1
+                #team_val = vars()['team_{}'.format(exp_count)]
+                team_1.append(random_player)
+                all_roster.remove(random_player)
+
+            elif random_player['experience'] == False and inexp_count < 3 and 3 < 6:
+                inexp_count += 1
+                #team_val = vars()['team_{}'.format(exp_count)]
+                team_1.append(random_player)
+                all_roster.remove(random_player)
+
+    print("team_1:", team_1)
     return team_1, team_2, team_3
 
 
 def show_data(current_team):
     team_1, team_2, team_3 = final_teams()
+
+    #print(final_teams())
 
     teams = teams=constants.TEAMS
     player_names = []
@@ -127,22 +130,17 @@ def restart_tool():
         pass
 
 def players_tool():
-    roster_exp = []
-    roster_inexp = []
     players = constants.PLAYERS
     for player in players:
         for key, value in player.items():           
             if key == 'experience' and value == 'YES':
                 player[key] = True
-                roster_exp.append(player)
                 pass
             elif key == 'experience' and value == 'NO':
                 player[key] = False
-                roster_inexp.append(player)
                 pass
     
-    return roster_exp, roster_inexp
-
+    return players
 
 def start_tool():
 
