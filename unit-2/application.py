@@ -48,7 +48,7 @@ def final_teams():
     exp_count = 0
     inexp_count = 0
 
-    print(all_roster, "----------------")
+    #print(all_roster, "----------------")
         
 
     for k, v in all_roster.items():  
