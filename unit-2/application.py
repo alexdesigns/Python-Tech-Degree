@@ -2,13 +2,14 @@ import time
 import constants
 import random
 
-def data_tool():
-    teams = teams=constants.TEAMS
-    teams = {k: v for k, v in enumerate(teams, 1)}
+#clean data
+def get_data():
 
     print("Team:")
-    for key, value in teams.items():
-        print(f'  {key}) {value}')
+    select_num = 0
+    for key in clean_player_list.items():
+        select_num += 1
+        print("{}) {}".format(select_num, key))
     
     teams_tool_play = True
     while teams_tool_play:
@@ -24,91 +25,32 @@ def data_tool():
             if select_team >= 1 and select_team <= 3:
                 restart_attempt = 0
                 # -------------------------------------
-                final_teams()
-                # -------------------------------------
-                show_data(select_team)
+                if select_team == 1:
+                    output_team('Panthers', clean_player_list)
+                elif select_team == 2:
+                    output_team('Bandits', clean_player_list)
+                elif select_team == 3:
+                    output_team('Warriors', clean_player_list)
                 # -------------------------------------
                 restart_tool()
                 break
             else:
                 print ("ERROR: ENTER 1-3\n")
+    
+    return select_team
         
                 
-def final_teams():
-    get_roster = players_tool()
-    all_roster = dict(j for i in get_roster for j in i.items())
-    
-    roster_players = len(all_roster)
-    players_amount = roster_players // 3
-
-    team_1 = []
-    team_2 = []
-    team_3 = []
-
-    exp_count = 0
-    inexp_count = 0
-
-    #print(all_roster, "----------------")
-        
-
-    for k, v in all_roster.items():  
-        print(f'  {k}) {v}')
-        random_player = random.choice(list(all_roster.keys()))
-        #random_player_exp = random_player['experience']
-        #print(random_player_exp)
-        quit()
-        for player in all_roster:
-            if random_player['experience'] == True and exp_count < 3 and 3 < 6:
-                exp_count += 1
-                #team_val = vars()['team_{}'.format(exp_count)]
-                team_1.append(random_player)
-                all_roster.remove(random_player)
-
-            elif random_player['experience'] == False and inexp_count < 3 and 3 < 6:
-                inexp_count += 1
-                #team_val = vars()['team_{}'.format(exp_count)]
-                team_1.append(random_player)
-                all_roster.remove(random_player)
-
-    print("team_1:", team_1)
-    return team_1, team_2, team_3
-
-
-def show_data(current_team):
-    team_1, team_2, team_3 = final_teams()
-
-    #print(final_teams())
-
-    teams = teams=constants.TEAMS
+def output_team(team_name, clean_player_list):
+    output_exp_num = 0
+    output_inexp_num = 0
     player_names = []
-    roster_exp_num = 0
-    roster_inexp_num = 0
 
-    if current_team == 1:
-        final_team = team_1
-        team_name = teams[current_team]
-    elif current_team == 2:
-        final_team = team_2
-        team_name = teams[current_team]
-    else: 
-        final_team = team_3
-        team_name = teams[current_team]
-    
-    for val in final_team:
-        for key, value in val.items():
-            if key == "name":
-                player_names.append(value)
-            if key == 'experience' and value == True:
-                roster_exp_num += 1
-            else:
-                roster_inexp_num += 1
+    player_name = [k['name'] for k in clean_player_list[team_name]]
 
     print("-" * 40)
     print("\nTeam: {}".format(team_name))
-    print("Total Players: ", len(final_team))
-    print("Total Experienced Players: ", roster_exp_num)
-    print("Total Inexperienced Players: ", roster_inexp_num)
-    print("Players: ",", ".join(player_names))        
+    print("Total Players: ", len(clean_player_list[team_name]))
+    print("Players: ",", ".join(player_name))        
 
 def restart_tool():
     restart_attempt = 1
@@ -123,24 +65,46 @@ def restart_tool():
         print("Goodbye")
         quit()
     elif select_restart == "Y":
-        data_tool()        
+        get_data()        
         pass
     else:
         print("Enter Q or Y")
         pass
 
-def players_tool():
+def player_sort():
+    teams = constants.TEAMS
     players = constants.PLAYERS
-    for player in players:
+    team_list = {team: [] for team in teams}
+    players_per_team = len(players) // len(teams)
+
+    for player in players.copy():
         for key, value in player.items():           
             if key == 'experience' and value == 'YES':
                 player[key] = True
-                pass
             elif key == 'experience' and value == 'NO':
                 player[key] = False
-                pass
+
+    for name, val in team_list.items():
+        exp_num = 0
+        inexp_num = 0
+
+        for player in players.copy():          
+            random_player = random.choice(players)
+
+            if random_player['experience'] == True and exp_num < 3 and len(team_list[name]) < players_per_team:
+                exp_num += 1
+                team_list[name].append(random_player)
+                players.remove(random_player)
+
+            elif random_player['experience'] == False and inexp_num < 3 and len(team_list[name]) < players_per_team:
+                inexp_num += 1 
+                team_list[name].append(random_player)
+                players.remove(random_player)
+
+    return team_list
     
-    return players
+clean_player_list = player_sort()
+#cleaned data
 
 def start_tool():
 
@@ -154,23 +118,35 @@ def start_tool():
     print("1) Display Team Stats")
     print("2) Quit")
     print("-" * 40)
-    option_num = input("Ready? Enter 1 or 2: ")
-    print("-" * 40)
 
     play_tool = True
     while play_tool:
+
+        error_num = 0
+        if error_num != 0:
+            option_num = input("Ready? Enter 1 or 2: ")
+        else:
+            time.sleep(.5)
+            option_num = input("Enter 1 or 2: ")
+
+        print("-" * 40)
+
         try:
             option_num = int(option_num)
         except ValueError:
-            print ("ERROR: ENTER 1 OR 2")
-            #pass
+            print ("ERROR: Try Again...\n")
+            error_num += 1
+            continue
         else:
             if option_num == 1:
-                data_tool()         
-            else:
+                get_data() 
+            elif option_num == 2:
                 print("Goodbye")
                 play_tool = False
                 break
+            else:
+                print("ERROR: Try Again...\n")
+                pass
 
 
 if __name__ == '__main__': 
