@@ -7,7 +7,7 @@ def get_data():
 
     print("Team:")
     select_num = 0
-    for key in clean_player_list.items():
+    for key, value in clean_player_list.items():
         select_num += 1
         print("{}) {}".format(select_num, key))
     
